@@ -1,0 +1,9 @@
+query Plans($filter: PlansFiltersInput!, $limit: Int, $after: Int) {
+  Plans(filter: $filter, limit: $limit, after: $after) {
+    id rootrecordId subjectBiin subjectNameRu subjectNameKz
+    nameRu nameKz descRu descKz refTradeMethodsId refUnitsCode
+    count price amount refMonthsId refPlnPointStatusId plnPointYear
+    refSubjectTypeId refEnstruCode refEnstruId refFinsourceId
+    dateCreate timestamp isActive isDeleted systemId indexDate
+  }
+}

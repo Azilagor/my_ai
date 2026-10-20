@@ -1,0 +1,20 @@
+query RelatedPlans($filter: PlansFiltersInput!, $limit: Int, $after: Int) {
+  Plans(filter: $filter, limit: $limit, after: $after) {
+    id rootrecordId subjectBiin subjectNameRu subjectNameKz
+    nameRu nameKz descRu descKz refTradeMethodsId refUnitsCode
+    count price amount refMonthsId refPlnPointStatusId plnPointYear
+    refSubjectTypeId refEnstruCode refEnstruId refFinsourceId
+    dateCreate timestamp isActive isDeleted systemId indexDate
+    PlansKato {
+      id plnPointsId refKatoCode refCountriesCode
+      fullDeliveryPlaceNameRu fullDeliveryPlaceNameKz count isActive
+      RefKato { code nameRu nameKz fullNameRu fullNameKz parentCode level }
+    }
+    RefUnits { code code2 alphaCode nameRu nameKz }
+    RefSubjectType { id nameRu nameKz }
+    RefTradeMethods { id nameRu nameKz code symbolCode isActive }
+    RefPlnPointStatus { id nameRu nameKz code }
+    RefFinsource { id nameRu nameKz code }
+    RefEnstru { id code nameRu nameKz parentId level descRu descKz mkei edizm }
+  }
+}

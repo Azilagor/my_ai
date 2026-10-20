@@ -1,0 +1,7 @@
+query Subjects($filter: SubjectFiltersInput!, $limit: Int, $after: Int) {
+  Subjects(filter: $filter, limit: $limit, after: $after) {
+    pid bin iin nameRu nameKz fullNameRu fullNameKz
+    customer organizer supplier typeSupplier katoList
+    systemId indexDate lastUpdateDate
+  }
+}

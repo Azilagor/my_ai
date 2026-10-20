@@ -1,0 +1,58 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: goszakup-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: goszakup
+      POSTGRES_USER: goszakup
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change_me_local}
+    ports:
+      - "55432:5432"
+    volumes:
+      - goszakup_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U goszakup -d goszakup"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  etl:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: goszakup-etl
+    environment:
+      DATABASE_URL: postgresql+psycopg2://goszakup:${POSTGRES_PASSWORD:-change_me_local}@db:5432/goszakup
+      APP_USERNAME: ${APP_USERNAME:-admin}
+      APP_PASSWORD_HASH: ${APP_PASSWORD_HASH:-}
+      OWS_API_URL: ${OWS_API_URL:-https://ows.goszakup.gov.kz/v3/graphql}
+      OWS_API_TOKEN: ${OWS_API_TOKEN:-}
+      Token: ${Token:-}
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      db:
+        condition: service_healthy
+    command: ["python", "etl.py", "--source-dir", "/app/data/export"]
+    restart: "no"
+
+  streamlit:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: goszakup-streamlit
+    environment:
+      DATABASE_URL: postgresql+psycopg2://goszakup:${POSTGRES_PASSWORD:-change_me_local}@db:5432/goszakup
+    ports:
+      - "18501:8501"
+    volumes:
+      - ./data:/app/data:ro
+    depends_on:
+      etl:
+        condition: service_completed_successfully
+    command: ["streamlit", "run", "app.py", "--server.address=0.0.0.0", "--server.port=8501"]
+    restart: unless-stopped
+
+volumes:
+  goszakup_pgdata:

@@ -1,0 +1,16 @@
+query LotsWithPlans($filter: LotsFiltersInput!, $limit: Int, $after: Int) {
+  Lots(filter: $filter, limit: $limit, after: $after) {
+    id lotNumber refLotStatusId lastUpdateDate count amount
+    nameRu nameKz descriptionRu descriptionKz customerId customerBin
+    customerNameRu customerNameKz trdBuyNumberAnno trdBuyId dumping
+    refTradeMethodsId refBuyTradeMethodsId pointList enstruList
+    plnPointKatoList isDeleted systemId indexDate
+    TrdBuy { publishDate }
+    Plans {
+      id refEnstruCode refEnstruId refUnitsCode plnPointYear count price amount
+      PlansKato { refKatoCode fullDeliveryPlaceNameRu fullDeliveryPlaceNameKz }
+      RefUnits { code code2 alphaCode nameRu nameKz }
+      RefEnstru { id code nameRu nameKz parentId level descRu descKz mkei edizm }
+    }
+  }
+}

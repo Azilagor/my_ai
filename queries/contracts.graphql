@@ -1,0 +1,12 @@
+query Contracts($filter: ContractFiltersInput!, $limit: Int, $after: Int) {
+  Contract(filter: $filter, limit: $limit, after: $after) {
+    id parentId rootId trdBuyId trdBuyNumberAnno trdBuyNameRu
+    refContractStatusId deleted crdate lastUpdateDate
+    supplierId supplierBiin supplierFio supplierLegalAddress
+    contractNumber contractNumberSys customerId customerBin customerFio
+    customerLegalAddress refSubjectTypeId finYear refCurrencyCode
+    exchangeRate contractSum contractSumWnds signDate ecEndDate
+    planExecDate faktExecDate faktSum faktSumWnds contractEndDate
+    descriptionRu faktTradeMethodsId systemId indexDate
+  }
+}
